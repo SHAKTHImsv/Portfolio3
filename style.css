@@ -1,4 +1,3 @@
-/* Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -150,7 +149,9 @@
 .circle2{
     width: 360px;
     height: 360px;
-    background-color: white;
+    background-image: url('./6385@266629850.jpg');
+    background-position: center;
+    background-size: 320px;
     border-radius: 50%;
     
 }
@@ -488,6 +489,7 @@ form button:hover{
     .circle2 {
       width: 220px;
       height: 220px;
+      background-size: 190px;
     }
   
     .intro h1 {
