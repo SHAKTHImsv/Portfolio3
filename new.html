@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D to Grid Cards</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #121212;
+      color: white;
+      font-family: sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .inner {
+      --w: 120px;
+      --h: 170px;
+      --translateZ: 270px;
+      --rotateX: -15deg;
+      --perspective: 1000px;
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      transform-style: preserve-3d;
+      transform: perspective(var(--perspective));
+      animation: rotating 20s linear infinite;
+    }
+
+    .inner.grid-mode {
+      animation: none;
+      display: grid;
+      grid-template-columns: repeat(3, 130px);
+      grid-template-rows: repeat(3, 180px);
+      gap: 20px;
+      transform: none;
+      width: auto;
+      height: auto;
+    }
+
+    @keyframes rotating {
+      from {
+        transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(0);
+      }
+      to {
+        transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(360deg);
+      }
+    }
+
+    .card {
+      position: absolute;
+      border: 2px solid rgba(var(--color-card), 0.8);
+      border-radius: 12px;
+      background: rgba(var(--color-card), 0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      padding: 10px;
+      inset: 0;
+      transform: rotateY(calc((360deg / var(--quantity)) * var(--index))) translateZ(var(--translateZ));
+    }
+
+    .grid-mode .card {
+      position: relative;
+      transform: none !important;
+    }
+
+    .card.selected {
+      box-shadow: 0 0 15px white;
+      border: 2px solid #fff;
+      z-index: 10;
+    }
+
+    .img {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+    }
+
+    .view-btn {
+      background-color: #ffffff;
+      color: #121212;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin-top: 10px;
+    }
+
+    .view-btn:hover {
+      background-color: #ddd;
+    }
+
+    .view-btn:focus {
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+
+    <section id="project">
+        <div class="heading">
+            <h1>MY PROJECTS</h1>
+        </div>
+        <hr>
+        <div class="wrapper">
+            <div class="inner" id="cardContainer" style="--quantity: 9;">
+              <!-- Cards -->
+              <div class="card" style="--index: 0; --color-card: 142,249,252;">
+                <div class="img">HTML</div>
+                <button class="view-btn" onclick="openLink('https://developer.mozilla.org/en-US/docs/Web/HTML')">View</button>
+              </div>
+              <div class="card" style="--index: 1; --color-card: 142,252,204;">
+                <div class="img">CSS</div>
+                <button class="view-btn" onclick="openLink('https://developer.mozilla.org/en-US/docs/Web/CSS')">View</button>
+              </div>
+              <div class="card" style="--index: 2; --color-card: 142,252,157;">
+                <div class="img">JavaScript</div>
+                <button class="view-btn" onclick="openLink('https://developer.mozilla.org/en-US/docs/Web/JavaScript')">View</button>
+              </div>
+              <div class="card" style="--index: 3; --color-card: 215,252,142;">
+                <div class="img">React</div>
+                <button class="view-btn" onclick="openLink('https://reactjs.org')">View</button>
+              </div>
+              <div class="card" style="--index: 4; --color-card: 252,252,142;">
+                <div class="img">Node</div>
+                <button class="view-btn" onclick="openLink('https://nodejs.org')">View</button>
+              </div>
+              <div class="card" style="--index: 5; --color-card: 252,208,142;">
+                <div class="img">Python</div>
+                <button class="view-btn" onclick="openLink('https://python.org')">View</button>
+              </div>
+              <div class="card" style="--index: 6; --color-card: 252,142,142;">
+                <div class="img">MongoDB</div>
+                <button class="view-btn" onclick="openLink('https://www.mongodb.com/')">View</button>
+              </div>
+              <div class="card" style="--index: 7; --color-card: 252,142,239;">
+                <div class="img">SQL</div>
+                <button class="view-btn" onclick="openLink('https://www.w3schools.com/sql/')">View</button>
+              </div>
+              <div class="card" style="--index: 8; --color-card: 204,142,252;">
+                <div class="img">Linux</div>
+                <button class="view-btn" onclick="openLink('https://ubuntu.com/')">View</button>
+              </div>
+            </div>
+          </div>
+        <button><a href="">Explore More on Github</a></button>
+    </section>
+
+
+  
+
+<script>
+  const container = document.getElementById('cardContainer');
+  const cards = document.querySelectorAll('.card');
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      if (!container.classList.contains('grid-mode')) {
+        container.classList.add('grid-mode');
+      }
+
+      cards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+    });
+  });
+
+  function openLink(url) {
+    window.open(url, '_blank');
+  }
+</script>
+
+</body>
+</html>
